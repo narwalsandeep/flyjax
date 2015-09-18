@@ -1,6 +1,9 @@
 /**
  * @author narwal sandeep at gee mail dot com
  * @param $
+ * 
+ * @license Licensed under the MIT licenses:
+ *          http://www.opensource.org/licenses/mit-license.php
  */
 (function($) {
 
