@@ -5,10 +5,10 @@ version 1.0.0
 Ajax enable any html form and preconfigured it with jQuery Noty plugin. 
  
 ### Features
-> Ajax enable the form
-~ Integration with Noty Plugin
+- Ajax enable the form
+- Integration with Noty Plugin
 - Support Success and Failure Callback
-+ Option to disable Submit Button
+- Option to disable Submit Button
 
 ### Usage
 > $(IDENTIFIER).flyjax(options, successCallback,failureCallback);
