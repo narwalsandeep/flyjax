@@ -3,6 +3,7 @@ version 1.0.0
 
 ### Description
 Ajax enable any html form and preconfigured it with jQuery Noty plugin. 
+click to see <a href="http://ned.im/noty/#/about">noty</a> plugin
  
 ### Features
 - Ajax enable the form
