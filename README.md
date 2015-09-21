@@ -1,18 +1,21 @@
 # flyjax
-#### version 1.0.0
+version 1.0.0
 
-## Features
+### Description
+Ajax enable any html form and preconfigure it with Noty plugin. 
+ 
+### Features
 ###### Ajax enable the form
 ###### Integration with Noty Plugin
 ###### Support Success and Failure Callback
 ###### Option to disable Submit Button
 
-## Usage
-##### >$(IDENTIFIER).flyjax(options, successCallback,failureCallback);
+### Usage
+> $(IDENTIFIER).flyjax(options, successCallback,failureCallback);
 
-## Roadmap
+### Roadmap
 Allow file uploads
 
-## Demo
+### Demo
 click to see <a href="">Demo</a>
 					
