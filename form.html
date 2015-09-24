@@ -51,14 +51,14 @@
 
 				<hr>
 				<h4>Sample Config :</h4>
-				<code>{<bR>enableNoty : true,<br>
-					noty:noty,<bR> notySuccess : "Form was submitted",<bR>
-					notyFailure : "An error occurred",<bR> disabledSubmitButtonText : "Please wait...",<br>
-					}
+				<code>
+					{<bR>enableNoty : true,<br> noty:noty,<bR>
+					notySuccess : "Form was submitted",<bR> notyFailure : "An
+					error occurred",<bR> disabledSubmitButtonText : "Please
+					wait...",<br> }
 				</code>
-				<br>
-				<small class="text text-primary">check source.js to see
-					their default value</small>
+				<br> <small class="text text-primary">check source.js
+					to see their default value</small>
 				<hr>
 				<h4>RoadMap:</h4>
 				<ul>
@@ -157,7 +157,9 @@ function(form, response) {
 <script>
 	$(document).ready(function() {
 		$('form[flyjax]').flyjax({
-			noty : noty
+			noty : noty,
+			notySuccess : "Successful",
+			notyFailure : "Error Occurred!"
 
 		}, function(form, response) {
 			// Success : do something
