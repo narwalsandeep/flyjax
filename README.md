@@ -20,8 +20,7 @@ Click to see <a href="http://ned.im/noty/#/about">noty</a> plugin
 ### Requirement
 
 - source.js and noty.js (both provided)
-- Form must have the attribute 'flyjax' like below 
-  <form method="post" flyjax action="foo.php">
+- Just add attribute 'flyjax' to a form 
 - There must be a 'button' with type="submit"
 
 ### Roadmap
