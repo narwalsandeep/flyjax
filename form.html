@@ -18,19 +18,47 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<h4>Features:</h4>
 				<ul>
-					<li>Ajax enable the form</li>
-					<li>Integration with Noty Plugin</li>
+					<li>Ajax enable any form</li>
+					<li>Inbuild with Noty Plugin <a
+						href="http://ned.im/noty/#/about">link to noty website</a></li>
 					<li>Support Success and Failure Callback</li>
 					<li>Option to disable Submit Button</li>
+					<li>Auto fallback of original submit button value when ajax
+						call finishes</li>
 
 				</ul>
+				<hr>
+				<h4>Requirement:</h4>
+				<ul>
+					<li>source.js and noty.js (both provided)</li>
+					<li>Form must have the attribute 'flyjax' like below <br>
+						<code>&lt;form method="post" flyjax action="foo.php"&gt;</code></li>
+					<li>There must be a 'button' with type="submit"</li>
+				</ul>
+				<i class="text text-warning">consider sourcecode of form on
+					right.</i>
 				<hr>
 				<h4>Usage:</h4>
 				<code>$(IDENTIFIER).flyjax(options, successCallback,
 					failureCallback);</code>
+				<div>To use Noty Plugin just include noty.js provided in your
+					page and pass below config option:</div>
+				<code>$(IDENTIFIER).flyjax({noty:noty}, successCallback,
+					failureCallback);</code>
+
+				<hr>
+				<h4>Sample Config :</h4>
+				<code>{<bR>enableNoty : true,<br>
+					noty:noty,<bR> notySuccess : "Form was submitted",<bR>
+					notyFailure : "An error occurred",<bR> disabledSubmitButtonText : "Please wait...",<br>
+					}
+				</code>
+				<br>
+				<small class="text text-primary">check source.js to see
+					their default value</small>
 				<hr>
 				<h4>RoadMap:</h4>
 				<ul>
@@ -40,7 +68,7 @@
 				</ul>
 
 			</div>
-			<div class="col-md-8  alert">
+			<div class="col-md-6  alert">
 				<form class="form-horizontal" method="post" flyjax action="foo.php">
 					<div class="form-group">
 						<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
@@ -56,7 +84,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputPassword3" class="col-sm-2 control-label">User
+						<label for="inputPassword3" class="col-sm-2 control-label">
 							Type</label>
 						<div class="col-sm-10">
 							<select class="form-control" name="user_type"><option
@@ -74,7 +102,8 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-primary">Try Me!</button>
+							<button type="submit" name="" class="btn btn-primary">Try
+								Me!</button>
 						</div>
 					</div>
 				</form>
@@ -87,7 +116,10 @@
 		<h4>Code for above form:</h4>
 		<pre>
 			<code>
-$('form[ajax-form-submit]').flyjax(function(form, response) {
+$('form[ajax-form-submit]').flyjax({
+	noty:noty
+}
+function(form, response) {
 	if (response.success) {
 		showNoty("success", response.message);
 	} else {
@@ -126,8 +158,8 @@ $('form[ajax-form-submit]').flyjax(function(form, response) {
 <script>
 	$(document).ready(function() {
 		$('form[flyjax]').flyjax({
-			noty : noty,
-			notyFailure : "An error occurred..",
+			noty : noty
+
 		}, function(form, response) {
 			// Success : do something
 		}, function(form, response) {

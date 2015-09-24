@@ -10,7 +10,7 @@
 	var defaults = {
 		identifier : "flyjax",
 		disableSubmitButton : true,
-		disableSubmitButtonText : "Sending ...",
+		disabledSubmitButtonText : "Sending ...",
 
 		noty : "", // user must assign noty from config e.g. noty:noty
 		enableNoty : true,
@@ -21,77 +21,116 @@
 
 	}
 
-	var SubmitMethod = function(form, options, success, error) {
+	var SubmitMethod = function(form, options, success, failure) {
 
 		this.options = $.extend(defaults, options);
-		this.init(form, success, error);
+		this.form = form;
+		this.successCallback = success;
+		this.failureCallback = failure;
+		this.init();
 	}
 
 	SubmitMethod.prototype = {
-		init : function(form, success, failure) {
-			var btn = $(this.form).find("[type=submit]");
-			var obj = this;
-			this.form = $(form);
-			obj.options = this.options;
+		init : function() {
+
+			this.setSubmitButtonText(this.getSubmitButton().html());
 
 			// in case noty is not defined, disable its use
-			if (obj.options.noty == "") {
-				obj.options.enableNoty = false;
+			if (this.getOptions().noty == "") {
+				this.getOptions().enableNoty = false;
 			}
-
-			this.form.submit(function(event) {
-				if (obj.options.disableSubmitButton) {
-					obj.toggleSubmitButton(true);
+			this.triggerSubmit();
+		},
+		triggerSubmit : function() {
+			instance = this.getInstance();
+			this.getForm().submit(function(event) {
+				if (!instance.getSubmitButton()) {
+					return false;
 				}
-				var form = $(this);
+				if (instance.getOptions().disableSubmitButton) {
+					instance.toggleSubmitButton(true);
+				}
 				$.ajax({
-					type : form.attr('method'),
-					url : form.attr('action'),
-					data : form.serialize()
+					type : instance.getForm().attr('method'),
+					url : instance.getForm().attr('action'),
+					data : instance.getForm().serialize()
 				}).done(function() {
-					obj.triggerSuccess(obj, success, form);
+					instance.triggerSuccess();
 				}).fail(function() {
-					obj.triggerFailure(obj, failure, form);
+					instance.triggerFailure();
 				});
 				event.preventDefault();
 			});
 		},
+		getInstance : function() {
+			return this;
+		},
+		getForm : function() {
+			return this.form;
+		},
+		getOptions : function() {
+			return this.options;
+		},
+		getSubmitButton : function() {
+			btn = $(this.getForm()).find("button[type=submit]").first();
+
+			if (btn.attr("type") == "submit") {
+				return btn;
+			}
+
+			alert("To use flyjax, you must have a <button> with type='submit' within the form.");
+			return false;
+
+		},
+		getSuccessCallback : function() {
+			return this.successCallback;
+		},
+		getFailureCallback : function() {
+			return this.failureCallback;
+		},
+		setSubmitButtonText : function(text) {
+			this.submitButtonText = text;
+		},
+		getSubmitButtonText : function() {
+			return this.submitButtonText;
+		},
 		toggleSubmitButton : function(state) {
 			if (state) {
-				$(btn).text(obj.options.disableSubmitButtonText);
-				$(btn).prop("disabled", true);
+				$(this.getSubmitButton()).text(this.getOptions().disabledSubmitButtonText);
+				$(this.getSubmitButton()).prop("disabled", true);
 			} else {
-				$(btn).text(obj.options.disableSubmitButtonText);
-				$(btn).prop("disabled", false);
+				$(this.getSubmitButton()).text(this.submitButtonText);
+				$(this.getSubmitButton()).prop("disabled", false);
 			}
 
 		},
-		triggerSuccess : function(obj, success, form) {
-			success(form);
-			if (obj.options.enableNoty) {
-				obj.options.noty({
-					text : obj.options.notySuccess,
-					type : "success",
-					layout : obj.options.notyLayout,
-					theme : obj.options.notyTheme
-
-				});
-			}
-			obj.toggleSubmitButton(false);
-
+		triggerSuccess : function() {
+			this.successCallback();
+			this.triggerNoty("success");
 		},
-		triggerFailure : function(obj, failure, form) {
-			failure(form);
-			if (obj.options.enableNoty) {
-				obj.options.noty({
-					text : obj.options.notyFailure,
-					type : "error",
-					layout : obj.options.notyLayout,
-					theme : obj.options.notyTheme
+		triggerFailure : function() {
+			this.failureCallback();
+			this.triggerNoty("failure");
+		},
+		triggerNoty:function(status){
+			if(status == "success"){
+				msg = this.getOptions().notySuccess;
+				cls = "success";
+			}
+			if(status == "failure"){
+				msg = this.getOptions().notyFailure;
+				cls = "error";
+			}
+			if (this.getOptions().enableNoty) {
+				this.getOptions().noty({
+					text : msg,
+					type : cls,
+					layout : this.getOptions().notyLayout,
+					theme : this.getOptions().notyTheme
 				});
 			}
-			obj.toggleSubmitButton(false);
-
+			this.toggleSubmitButton(false);
+			
 		}
 	}
 
