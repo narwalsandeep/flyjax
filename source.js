@@ -54,10 +54,10 @@
 					type : instance.getForm().attr('method'),
 					url : instance.getForm().attr('action'),
 					data : instance.getForm().serialize()
-				}).done(function() {
-					instance.triggerSuccess();
-				}).fail(function() {
-					instance.triggerFailure();
+				}).done(function(response) {
+					instance.triggerSuccess(response);
+				}).fail(function(response) {
+					instance.triggerFailure(response);
 				});
 				event.preventDefault();
 			});
@@ -96,7 +96,8 @@
 		},
 		toggleSubmitButton : function(state) {
 			if (state) {
-				$(this.getSubmitButton()).text(this.getOptions().disabledSubmitButtonText);
+				$(this.getSubmitButton()).text(
+						this.getOptions().disabledSubmitButtonText);
 				$(this.getSubmitButton()).prop("disabled", true);
 			} else {
 				$(this.getSubmitButton()).text(this.submitButtonText);
@@ -104,20 +105,20 @@
 			}
 
 		},
-		triggerSuccess : function() {
-			this.successCallback();
+		triggerSuccess : function(response) {
+			this.successCallback(this.getForm(), response);
 			this.triggerNoty("success");
 		},
-		triggerFailure : function() {
-			this.failureCallback();
+		triggerFailure : function(response) {
+			this.failureCallback(this.getForm(), response);
 			this.triggerNoty("failure");
 		},
-		triggerNoty:function(status){
-			if(status == "success"){
+		triggerNoty : function(status) {
+			if (status == "success") {
 				msg = this.getOptions().notySuccess;
 				cls = "success";
 			}
-			if(status == "failure"){
+			if (status == "failure") {
 				msg = this.getOptions().notyFailure;
 				cls = "error";
 			}
@@ -130,7 +131,7 @@
 				});
 			}
 			this.toggleSubmitButton(false);
-			
+
 		}
 	}
 
